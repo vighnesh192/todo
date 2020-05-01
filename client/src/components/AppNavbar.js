@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
 
 class AppNavbar extends Component {
     state = {
@@ -22,8 +24,17 @@ class AppNavbar extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
+                                <NavLink href="/">Home</NavLink>
+                            </NavItem>
+
+                            <NavItem>
+                                <NavLink href="/about">About</NavLink>
+                            </NavItem>
+
+                            <NavItem>
                                 <NavLink href="https://github.com/vighnesh192">Github</NavLink>
                             </NavItem>
+                            
                         </Nav>
                     </Collapse>
                 </Container>

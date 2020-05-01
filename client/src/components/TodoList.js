@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Container, ListGroup, ListGroupItem, Button, FormGroup, Form, Input } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import {v4 as uuid} from "uuid";
 import TodoItem from "./TodoItem";
+import axios from "axios";
 
 class TodoList extends Component {
 	state = {
@@ -10,23 +10,35 @@ class TodoList extends Component {
 		title: ''
 	};
 
+	componentDidMount() {
+		axios.get("/api/todos")
+			.then(res => this.setState({ todos: res.data }))
+	}
+
 	onChange = (e) => {
 		this.setState({ [e.target.name]: e.target.value })
 	}
 
 	//ADD TODO
 	addTodo = (e) => {
-		this.setState({todos: [...this.state.todos, {id: uuid() ,name: this.state.title}]})
+		axios.post('/api/todos', {
+			name: this.state.title
+		})
+			.then(res => this.setState({todos: [...this.state.todos, res.data]}))
+		
 		this.setState({ title: '' })
 	}
 
 	//DEL TODO
 	delTodo(item) {
-		this.setState((state) => ({
-			todos: state.todos.filter(
-				(todo) => todo.id !== item.id
-			),
-		}));
+		axios.delete(`/api/todos/${item._id}`)
+			.then(res => this.setState((state) => ({
+				todos: [...state.todos.filter(
+					(todo) => todo._id !== item._id
+				)]
+			})))
+
+		
 	}
 
 	render() {
@@ -49,7 +61,7 @@ class TodoList extends Component {
 				<ListGroup className="ListGroup">
 					<TransitionGroup className="todo-list">
 						{todos.map((item) => (
-							<CSSTransition key={item.id} timeout={500} classNames="fade">
+							<CSSTransition key={item._id} timeout={500} classNames="fade">
 								<ListGroupItem>
 
 								<Button
