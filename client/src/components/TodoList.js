@@ -13,6 +13,7 @@ class TodoList extends Component {
 	componentDidMount() {
 		axios.get("/api/todos")
 			.then(res => this.setState({ todos: res.data }))
+			.catch(err => console.log(err))
 	}
 
 	onChange = (e) => {
@@ -25,6 +26,7 @@ class TodoList extends Component {
 			name: this.state.title
 		})
 			.then(res => this.setState({todos: [...this.state.todos, res.data]}))
+			.catch(err => console.log(err))
 		
 		this.setState({ title: '' })
 	}
@@ -37,6 +39,7 @@ class TodoList extends Component {
 					(todo) => todo._id !== item._id
 				)]
 			})))
+			.catch(err => console.log(err))
 
 		
 	}
